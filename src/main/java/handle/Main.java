@@ -62,12 +62,17 @@ public class Main {
                     wordObj.setInWriting(line);
                 }
             }
+            line = line.substring(line.indexOf(" ")+1,line.length());
+            hungarianWordObject.setHungarianWord(line);
+            System.out.println(hungarianWordObject.getHungarianWord());
+            listH.add(hungarianWordObject);
+            hungarianWordObject = new HungarianWordObject();
 
             list.add(wordObj);
             wordObj = new WordObject();
             line = reader.readLine();
         }
-        list.forEach(s -> System.out.println(s.getE_word() + "    " + s.getPartOfSpeech() + "     " + s.getInSpeech() + "     " + s.getInWriting()));
+        //list.forEach(s -> System.out.println(s.getE_word() + "    " + s.getPartOfSpeech() + "     " + s.getInSpeech() + "     " + s.getInWriting()));
 
 
 
@@ -76,8 +81,8 @@ public class Main {
 
         ConnectionClass connectionClass = new ConnectionClass();
         Connection connection =connectionClass.getConnection();
-
-        for(int i = 0 ; i < list.size(); i++) {
+/*
+        for(int i = 0 ; i < listH.size(); i++) {
 
             String sql = "INSERT INTO ENGLISH_WORDS (english_word_id,english_word,part_of_speech,in_speech,in_writing) " +
                     "VALUES ('" + i + "','"+ list.get(i).getE_word() + "'," +
@@ -89,8 +94,25 @@ public class Main {
             System.out.println(list.get(i).getE_word());
             Statement statement = connection.createStatement();
             statement.executeUpdate(sql);
-        }
 
+            String sqlEnglishHungary = "INSERT INTO ENGLISH_HUNGARIAN (english_hungarian_id,english_word_id,hungarian_word_id,example_sentence)" +
+                    "VALUES ('" + i + "','"+ i + "'," + "'" + i + "'," + "null)";
+
+            System.out.println(sqlEnglishHungary);
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(sqlEnglishHungary);
+
+        }*/
+
+        for(int i = 0 ; i < listH.size(); i++) {
+
+            String sqlHungarianWords = "INSERT INTO HUNGARIAN_WORDS(hungarian_word_id,hungarian_word)" +
+                    "VALUES ('" + i + "','"+ listH.get(i).getHungarianWord() + "')";
+
+            System.out.println(sqlHungarianWords);
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(sqlHungarianWords);
+        }
 
 
     }
